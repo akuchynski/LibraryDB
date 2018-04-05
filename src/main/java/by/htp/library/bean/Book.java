@@ -16,6 +16,12 @@ public class Book extends Entity {
 		this.description = description;
 		this.author = author;
 	}
+	
+	public Book(String title, String description, String author) {
+		this.title = title;
+		this.description = description;
+		this.author = author;
+	}
 
 	public String getTitle() {
 		return title;

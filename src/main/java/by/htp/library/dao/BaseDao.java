@@ -12,7 +12,8 @@ public interface BaseDao<T extends Entity> {
 
 	public List<T> readAll();
 
-	public void update(T entity);
+	//public void update(T entity);
+	public void update(int id);
 
 	public void delete(int id);
 

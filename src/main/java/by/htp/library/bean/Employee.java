@@ -15,6 +15,11 @@ public class Employee extends Entity {
 		this.surname = surname;
 	}
 
+	public Employee(String name, String surname) {
+		this.name = name;
+		this.surname = surname;
+	}
+	
 	public String getName() {
 		return name;
 	}
