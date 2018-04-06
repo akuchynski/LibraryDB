@@ -19,20 +19,20 @@ public class MainApp {
 		List<Book> books1 = dao1.readAll();
 		List<Book> books2 = dao1.readByTitle("title2");
 		
-		Book book5 = new Book("title5", "desc5", "Author5");
-		//dao1.create(book5);
-		
-		Employee employee3 = new Employee ("name3", "surname3");
-		//dao2.create(employee3);
-
 		List<Employee> employees1 = dao2.readAll();
 		List<Employee> employees2 = dao2.readBySurname("surname2");
 		
-		//dao1.delete(7);
-		//dao2.delete(4);
+		Book book5 = new Book("title5", "desc5", "Author5");
+		dao1.create(book5);
 		
-		//dao1.update(9);
-		//dao2.update(3);
+		Employee employee3 = new Employee ("name3", "surname3");
+		dao2.create(employee3);
+		
+		dao1.delete(7);
+		dao2.delete(4);
+		
+		dao1.update(9);
+		dao2.update(3);
 
 		for (Book book : books1) {
 			System.out.println(book);
@@ -49,5 +49,9 @@ public class MainApp {
 		for (Employee employee : employees2) {
 			System.out.println("Found employees: " + employee);
 		}
+		
+		Report.getReportOne();
+		Report.getReportTwo();
+		
 	}
 }
