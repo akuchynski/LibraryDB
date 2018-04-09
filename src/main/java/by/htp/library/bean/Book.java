@@ -5,22 +5,18 @@ public class Book extends Entity {
 	private String title;
 	private String description;
 	private String author;
+	private int year;
 
 	public Book() {
 		super();
 	}
 
-	public Book(int id, String title, String description, String author) {
-		super(id);
+	public Book(String title, String description, String author, int year) {
+		super();
 		this.title = title;
 		this.description = description;
 		this.author = author;
-	}
-	
-	public Book(String title, String description, String author) {
-		this.title = title;
-		this.description = description;
-		this.author = author;
+		this.year = year;
 	}
 
 	public String getTitle() {
@@ -46,15 +42,23 @@ public class Book extends Entity {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+	
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
 		result = prime * result + ((author == null) ? 0 : author.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		result = prime * result + year;
 		return result;
 	}
 
@@ -67,9 +71,6 @@ public class Book extends Entity {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		if (super.id != other.id) {
-			return false;
-		}
 		if (author == null) {
 			if (other.author != null)
 				return false;
@@ -85,11 +86,13 @@ public class Book extends Entity {
 				return false;
 		} else if (!title.equals(other.title))
 			return false;
+		if (year != other.year)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Book [title=" + title + ", description=" + description + ", author=" + author + ", id=" + id + "]";
+		return "Book [title=" + title + ", description=" + description + ", author=" + author + ", year=" + year + "]";
 	}
 }

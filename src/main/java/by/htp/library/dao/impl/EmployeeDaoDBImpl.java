@@ -4,6 +4,7 @@ import static by.htp.library.dao.util.DBConnectionHelper.connect;
 import static by.htp.library.dao.util.DBConnectionHelper.disconnect;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,12 +16,12 @@ import by.htp.library.dao.EmployeeDao;
 
 public class EmployeeDaoDBImpl implements EmployeeDao {
 
-	private static final String SQL_CREATE_EMPLOYEE = "INSERT INTO employee (name, surname) VALUES";
+	private static final String SQL_CREATE_EMPLOYEE = "INSERT INTO employee (name, surname, email, year) VALUES (?, ?, ?, ?)";
 	private static final String SQL_READ_EMPLOYEES = "SELECT * FROM employee";
-	private static final String SQL_READ_EMPLOYEE_BY_ID = "SELECT * FROM employee WHERE emp_id = ";
-	private static final String SQL_READ_EMPLOYEES_BY_SURNAME = "SELECT * FROM employee WHERE surname = ";
-	private static final String SQL_UPDATE_EMPLOYEE_BY_ID = "UPDATE employee SET emp_id = emp_id + 1  WHERE emp_id = ";
-	private static final String SQL_DELETE_EMPLOYEE_BY_ID = "DELETE FROM employee WHERE emp_id = ";
+	private static final String SQL_READ_EMPLOYEE_BY_ID = "SELECT * FROM employee WHERE emp_id = ?";
+	private static final String SQL_READ_EMPLOYEES_BY_SURNAME = "SELECT * FROM employee WHERE surname = ?";
+	private static final String SQL_UPDATE_EMPLOYEE_BY_ID = "UPDATE employee SET name = ?, surname = ?, email = ?, year = ?  WHERE emp_id = ?";
+	private static final String SQL_DELETE_EMPLOYEE_BY_ID = "DELETE FROM employee WHERE emp_id = ?";
 
 	public void create(Employee entity) {
 
@@ -28,11 +29,14 @@ public class EmployeeDaoDBImpl implements EmployeeDao {
 
 		try {
 
-			Statement st = connection.createStatement();
-			String name = entity.getName();
-			String surname = entity.getSurname();
-
-			st.executeUpdate(SQL_CREATE_EMPLOYEE + " ('" + name + "', '" + surname + "')");
+			PreparedStatement ps = connection.prepareStatement(SQL_CREATE_EMPLOYEE);
+			
+			ps.setString(1, entity.getName());
+			ps.setString(2, entity.getSurname());
+			ps.setString(3, entity.getEmail());
+			ps.setInt(4, entity.getYear());
+			
+			ps.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -54,10 +58,13 @@ public class EmployeeDaoDBImpl implements EmployeeDao {
 			ResultSet rs = st.executeQuery(SQL_READ_EMPLOYEES);
 
 			while (rs.next()) {
+				
 				Employee employee = new Employee();
 				employee.setId(rs.getInt("emp_id"));
 				employee.setName(rs.getString("name"));
 				employee.setSurname(rs.getString("surname"));
+				employee.setEmail(rs.getString("email"));
+				employee.setYear(rs.getInt("year"));
 
 				employees.add(employee);
 			}
@@ -77,13 +84,17 @@ public class EmployeeDaoDBImpl implements EmployeeDao {
 		Employee employee = new Employee();
 
 		try {
-			Statement st = connection.createStatement();
-			ResultSet rs = st.executeQuery(SQL_READ_EMPLOYEE_BY_ID + id);
+			
+			PreparedStatement ps = connection.prepareStatement(SQL_READ_EMPLOYEE_BY_ID);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				employee.setId(rs.getInt("emp_id"));
 				employee.setName(rs.getString("name"));
 				employee.setSurname(rs.getString("surname"));
+				employee.setEmail(rs.getString("email"));
+				employee.setYear(rs.getInt("year"));
 			}
 
 		} catch (SQLException e) {
@@ -102,14 +113,17 @@ public class EmployeeDaoDBImpl implements EmployeeDao {
 
 		try {
 			
-			Statement st = connection.createStatement();
-			ResultSet rs = st.executeQuery(SQL_READ_EMPLOYEES_BY_SURNAME + "'" + surname + "'");
+			PreparedStatement ps = connection.prepareStatement(SQL_READ_EMPLOYEES_BY_SURNAME);
+			ps.setString(1, surname);
+			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				Employee employee = new Employee();
 				employee.setId(rs.getInt("emp_id"));
 				employee.setName(rs.getString("name"));
 				employee.setSurname(rs.getString("surname"));
+				employee.setEmail(rs.getString("email"));
+				employee.setYear(rs.getInt("year"));
 
 				employees.add(employee);
 			}
@@ -123,14 +137,21 @@ public class EmployeeDaoDBImpl implements EmployeeDao {
 		return employees;
 	}
 
-	public void update(int id) {
+	public void update(int id, Employee entity) {
 
 		Connection connection = connect();
 
 		try {
-
-			Statement st = connection.createStatement();
-			st.executeUpdate(SQL_UPDATE_EMPLOYEE_BY_ID + id);
+			
+			PreparedStatement ps = connection.prepareStatement(SQL_UPDATE_EMPLOYEE_BY_ID);
+			
+			ps.setString(1, entity.getName());
+			ps.setString(2, entity.getSurname());
+			ps.setString(3, entity.getEmail());
+			ps.setInt(4, entity.getYear());
+			ps.setInt(5, id);
+			
+			ps.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -144,8 +165,11 @@ public class EmployeeDaoDBImpl implements EmployeeDao {
 		Connection connection = connect();
 
 		try {
-			Statement st = connection.createStatement();
-			st.executeUpdate(SQL_DELETE_EMPLOYEE_BY_ID + id);
+			
+			PreparedStatement ps = connection.prepareStatement(SQL_DELETE_EMPLOYEE_BY_ID);
+			ps.setInt(1, id);
+			
+			ps.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();

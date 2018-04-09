@@ -4,22 +4,21 @@ public class Employee extends Entity {
 
 	private String name;
 	private String surname;
+	private String email;
+	private int year;
 
 	public Employee() {
 		super();
 	}
 
-	public Employee(int id, String name, String surname) {
-		super(id);
+	public Employee(String name, String surname, String email, int year) {
+		super();
 		this.name = name;
 		this.surname = surname;
+		this.email = email;
+		this.year = year;
 	}
 
-	public Employee(String name, String surname) {
-		this.name = name;
-		this.surname = surname;
-	}
-	
 	public String getName() {
 		return name;
 	}
@@ -36,13 +35,30 @@ public class Employee extends Entity {
 		this.surname = surname;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
+		result = prime * result + year;
 		return result;
 	}
 
@@ -55,9 +71,11 @@ public class Employee extends Entity {
 		if (getClass() != obj.getClass())
 			return false;
 		Employee other = (Employee) obj;
-		if (super.id != other.id) {
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
 			return false;
-		}
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -68,11 +86,14 @@ public class Employee extends Entity {
 				return false;
 		} else if (!surname.equals(other.surname))
 			return false;
+		if (year != other.year)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Employee [name=" + name + ", surname=" + surname + ", id=" + id + "]";
+		return "Employee [name=" + name + ", surname=" + surname + ", email=" + email + ", year=" + year + "]";
 	}
+
 }

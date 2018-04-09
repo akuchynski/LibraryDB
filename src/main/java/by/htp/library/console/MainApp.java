@@ -4,6 +4,7 @@ import java.util.List;
 
 import by.htp.library.bean.Book;
 import by.htp.library.bean.Employee;
+import by.htp.library.bean.Report;
 import by.htp.library.dao.BookDao;
 import by.htp.library.dao.EmployeeDao;
 import by.htp.library.dao.impl.BookDaoDBImpl;
@@ -22,17 +23,17 @@ public class MainApp {
 		List<Employee> employees1 = dao2.readAll();
 		List<Employee> employees2 = dao2.readBySurname("surname2");
 		
-		Book book5 = new Book("title5", "desc5", "Author5");
-		dao1.create(book5);
-		
-		Employee employee3 = new Employee ("name3", "surname3");
-		dao2.create(employee3);
-		
-		dao1.delete(7);
-		dao2.delete(4);
-		
-		dao1.update(9);
-		dao2.update(3);
+//		Book book5 = new Book("title10", "desc10", "Author10", 1990);
+//		dao1.create(book5);
+//		
+//		Employee employee3 = new Employee ("name3", "surname3", "mail3@mail.ru", 1991);
+//		dao2.create(employee3);
+//		
+//		dao1.delete(27);
+//		dao2.delete(8);
+//		
+//		dao1.update(28, book5);
+//		dao2.update(6, employee3);
 
 		for (Book book : books1) {
 			System.out.println(book);
